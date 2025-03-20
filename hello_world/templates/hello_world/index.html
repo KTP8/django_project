@@ -1,18 +1,77 @@
 {% extends "hello_world/base.html" %}
 
 {% block content %}
-<h2>Welcome to Our Restaurant, Home of Fresh Ingredients & Fantastic Flavours!</h2>
-<p style="line-height: 1.6;">
-<<<<<<< HEAD
-=======
-  This is the Home Page. Here you can see an intro or hero section.
->>>>>>> 5e47f01afd38348c40b0769a32faf9f9fdc835a8
-  We pride ourselves on authentic Italian cuisine, with fresh ingredients
-  and a cozy atmosphere.
-</p>
-<p>
-  <a href="/booking" style="color: #007BFF; text-decoration: underline;">
-    Click here to Book a Table
-  </a>
-</p>
+<div class="row">
+  <div class="col-12">
+    <h2>Welcome to La Italia!</h2>
+    <p>Your authentic Italian dining experience starts here.</p>
+  </div>
+</div>
+
+<!-- Menu Section -->
+<div class="row mt-5">
+  <div class="col-12">
+    <h3>Our Menu</h3>
+  </div>
+  
+  <!-- Starters -->
+  <div class="col-md-4">
+    <h4>Starters</h4>
+    <ul>
+      <li>Bruschetta (V)</li>
+      <li>Caprese Salad (V, GF)</li>
+      <li>Calamari Fritti</li>
+      <li>Antipasto Misto</li>
+      <li>Panzanella</li>
+      <li>Minestrone Soup</li>
+      <li>Parmigiana</li>
+    </ul>
+  </div>
+  
+  <!-- Mains -->
+  <div class="col-md-4">
+    <h4>Mains</h4>
+    <ul>
+      <li>Rigatoni Alla Norma(V)</li>
+      <li>Spaghetti Carbonara</li>
+      <li>Lasagna Bolognese</li>
+      <li>Risotto ai Funghi (V)</li>
+      <li>Pesto Genovese (V, GF)</li>
+      <li>Spaghetti Vongole</li>
+      <li>Frutti di Mare</li>
+      <li>Tuscan Trout (with seasonal greens) (GF)</li>
+    </ul>
+  </div>
+  
+  <!-- Desserts -->
+  <div class="col-md-4">
+    <h4>Desserts</h4>
+    <ul>
+      <li>Tiramisu</li>
+      <li>Panna Cotta (V, GF)</li>
+      <li>Gelato (V, GF)</li>
+      <li>Cannoli Siciliani</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Drinks Menu Section -->
+<div class="row mt-5">
+  <div class="col-12">
+    <h3>Drinks Menu</h3>
+    <ul>
+      <li>Negroni</li>
+      <li>Aperol Spritz</li>
+      <li>Bellini</li>
+      <li>Sbagliato</li>
+      <li>Americano</li>
+      <li>Campari Soda</li>
+      <li>Rossini</li>
+      <li>Hugo</li>
+      <li>Italian Margarita</li>
+      <li>Classic Martini</li>
+    </ul>
+    <p class="font-weight-bold">Wine list seasonal &amp; Soft drinks available on request</p>
+  </div>
+</div>
 {% endblock content %}
