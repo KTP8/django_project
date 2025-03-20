@@ -42,26 +42,42 @@ def booking(request):
 
             # Time validation against allowed slots
             if chosen_time not in ALLOWED_TIMES:
-                return render(request, 'hello_world/booking.html', {'form': form, 'error': "Select a valid booking time between 11:00 AM and 10:00 PM in 30-minute increments."})
+                return render(request, 'hello_world/booking.html', {
+                    'form': form,
+                    'error': "Select a valid booking time between 11:00 AM and 10:00 PM in 30-minute increments."
+                })
 
             # Booking date validation for up to six weeks ahead
             if chosen_date > datetime.now().date() + timedelta(weeks=6):
-                return render(request, 'hello_world/booking.html', {'form': form, 'error': "Bookings can only be made up to six weeks in advance."})
+                return render(request, 'hello_world/booking.html', {
+                    'form': form,
+                    'error': "Bookings can only be made up to six weeks in advance."
+                })
 
             # Party size validation with maximum limit
             if party_size > 8:
-                return render(request, 'hello_world/booking.html', {'form': form, 'error': "The maximum party size is 8."})
+                return render(request, 'hello_world/booking.html', {
+                    'form': form,
+                    'error': "The maximum party size is 8."
+                })
 
             # Duplicate booking check for the same email within 5 days window
-            existing_booking = Reservation.objects.filter(email=diner_email, date__range=[chosen_date - timedelta(days=5), chosen_date + timedelta(days=5)])
+            existing_booking = Reservation.objects.filter(
+                email=diner_email,
+                date__range=[chosen_date - timedelta(days=5), chosen_date + timedelta(days=5)]
+            )
             if existing_booking.exists():
-                return render(request, 'hello_world/booking.html', {'form': form, 'error': "Multiple bookings detected. Please contact support."})
+                return render(request, 'hello_world/booking.html', {
+                    'form': form,
+                    'error': "Multiple bookings detected. Please contact support."
+                })
 
             # Assign seating based on party size
+            # Updated to match the 'TABLE'/'COUNTER' choices in the model
             if party_size >= 7:
-                chosen_seating = "COUNTER SEATING"
+                chosen_seating = "COUNTER"
             else:
-                chosen_seating = "TABLE SEATING"
+                chosen_seating = "TABLE"
 
             # Create and save the reservation
             new_reservation = form.save(commit=False)
@@ -71,12 +87,25 @@ def booking(request):
             # Email confirmation with details and cancellation link
             send_mail(
                 'Booking Confirmation - La Italia',
-                f"Hello {new_reservation.name},\n\nThank you for your reservation at La Italia.\n\nDetails:\nDate: {new_reservation.date}\nTime: {new_reservation.time}\nParty Size: {new_reservation.party_size}\nSeating: {new_reservation.seating_type}\n\nTo cancel your reservation, please follow this link: http://127.0.0.1:8000/cancel/{new_reservation.cancel_token}\n\nWe look forward to welcoming you!",
+                (
+                    f"Hello {new_reservation.name},\n\n"
+                    f"Thank you for your reservation at La Italia.\n\n"
+                    f"Details:\n"
+                    f"Date: {new_reservation.date}\n"
+                    f"Time: {new_reservation.time}\n"
+                    f"Party Size: {new_reservation.party_size}\n"
+                    f"Seating: {new_reservation.seating_type}\n\n"
+                    f"To cancel your reservation, please follow this link: "
+                    f"http://127.0.0.1:8000/cancel/{new_reservation.cancel_token}\n\n"
+                    "We look forward to welcoming you!"
+                ),
                 settings.DEFAULT_FROM_EMAIL,
                 [diner_email],
                 fail_silently=False,
             )
-            return render(request, 'hello_world/booking_confirm.html', {'message': 'Booking successful! Check your email for confirmation.'})
+            return render(request, 'hello_world/booking_confirm.html', {
+                'message': 'Booking successful! Check your email for confirmation.'
+            })
         else:
             return render(request, 'hello_world/booking.html', {'form': form})
     else:
@@ -90,7 +119,10 @@ def reservation_list(request):
     form = PasswordForm(request.POST or None)
     if request.method == 'POST' and form.is_valid() and form.cleaned_data['password'] == 'boss':
         reservations = Reservation.objects.all().order_by('-date', '-time')
-        return render(request, 'hello_world/reservation_list.html', {'reservations': reservations, 'form': form})
+        return render(request, 'hello_world/reservation_list.html', {
+            'reservations': reservations,
+            'form': form
+        })
     return render(request, 'hello_world/password_entry.html', {'form': form})
 
 def reservation_detail(request, pk):
