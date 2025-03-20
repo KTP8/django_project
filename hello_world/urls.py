@@ -1,8 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # The line below routes the root URL to hello_world.urls
-    path('', include('hello_world.urls')),
+    path('', views.index, name='home'),
+    path('booking/', views.booking, name='booking_page'),
 ]
