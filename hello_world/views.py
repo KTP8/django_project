@@ -16,18 +16,21 @@ from datetime import datetime, timedelta, time as dt_time
 from .models import Reservation
 from .forms import ReservationForm, PasswordForm
 
-# Define dynamic booking times from 11:00 to 22:00 at 30-minute intervals
-ALLOWED_TIMES = [dt_time(hour=h, minute=m) for h in range(11, 22) for m in (0, 30)]
+# Dynamic allowed booking times from 11:00 to 22:00 at 30-minute intervals
+ALLOWED_TIMES = [dt_time(hour=h, minute=m) for h in range(11, 23) for m in (0, 30)]
 
 def index(request):
-    # Static home page view
+    # Home page view
     return render(request, 'hello_world/index.html')
 
 def menu(request):
-    # Static menu page view
+    # Menu page view
     return render(request, 'hello_world/menu.html')
 
 def booking(request):
+    """
+    Handles customer bookings with dynamic validations and sends email confirmations.
+    """
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
@@ -37,81 +40,85 @@ def booking(request):
             party_size = cd['party_size']
             diner_email = cd['email']
 
-            # Time validation
+            # Time validation against allowed slots
             if chosen_time not in ALLOWED_TIMES:
-                return render(request, 'hello_world/booking.html', {'form': form, 'error': "Please select a valid booking time between 11:00 AM and 10:00 PM in 30-minute increments."})
+                return render(request, 'hello_world/booking.html', {'form': form, 'error': "Select a valid booking time between 11:00 AM and 10:00 PM in 30-minute increments."})
 
-            # Booking date validation
-            six_weeks_ahead = datetime.now().date() + timedelta(weeks=6)
-            if chosen_date > six_weeks_ahead:
+            # Booking date validation for up to six weeks ahead
+            if chosen_date > datetime.now().date() + timedelta(weeks=6):
                 return render(request, 'hello_world/booking.html', {'form': form, 'error': "Bookings can only be made up to six weeks in advance."})
 
-            # Party size validation
+            # Party size validation with maximum limit
             if party_size > 8:
                 return render(request, 'hello_world/booking.html', {'form': form, 'error': "The maximum party size is 8."})
 
-            # Duplicate booking check
+            # Duplicate booking check for the same email within 5 days window
             existing_booking = Reservation.objects.filter(email=diner_email, date__range=[chosen_date - timedelta(days=5), chosen_date + timedelta(days=5)])
             if existing_booking.exists():
-                return render(request, 'hello_world/booking.html', {'form': form, 'error': "You already have a booking around these dates. Please verify your bookings."})
+                return render(request, 'hello_world/booking.html', {'form': form, 'error': "Multiple bookings detected. Please contact support."})
 
-            # Seating assignment logic
+            # Assign seating based on party size
             if party_size >= 7:
                 chosen_seating = "COUNTER SEATING"
-                max_counter_seats = 10
-                current_counter = sum(r.party_size for r in Reservation.objects.filter(date=chosen_date, time=chosen_time, seating_type=chosen_seating))
-                if current_counter + party_size > max_counter_seats:
-                    return render(request, 'hello_world/booking.html', {'form': form, 'error': "Only counter seating available and it's fully booked for your party size."})
             else:
                 chosen_seating = "TABLE SEATING"
 
+            # Create and save the reservation
             new_reservation = form.save(commit=False)
             new_reservation.seating_type = chosen_seating
             new_reservation.save()
 
-            # Email confirmation
+            # Email confirmation with details and cancellation link
             send_mail(
                 'Booking Confirmation - La Italia',
-                f'Hello {new_reservation.name},\n\nThank you for your reservation at La Italia.\n\nDetails:\nDate: {new_reservation.date}\nTime: {new_reservation.time}\nParty Size: {new_reservation.party_size}\nSeating: {new_reservation.seating_type}.',
+                f"Hello {new_reservation.name},\n\nThank you for your reservation at La Italia.\n\nDetails:\nDate: {new_reservation.date}\nTime: {new_reservation.time}\nParty Size: {new_reservation.party_size}\nSeating: {new_reservation.seating_type}\n\nTo cancel your reservation, please follow this link: http://127.0.0.1:8000/cancel/{new_reservation.cancel_token}\n\nWe look forward to welcoming you!",
                 settings.DEFAULT_FROM_EMAIL,
                 [diner_email],
                 fail_silently=False,
             )
-            return render(request, 'hello_world/booking_confirm.html')
+            return render(request, 'hello_world/booking_confirm.html', {'message': 'Booking successful! Check your email for confirmation.'})
         else:
             return render(request, 'hello_world/booking.html', {'form': form})
     else:
         form = ReservationForm()
         return render(request, 'hello_world/booking.html', {'form': form})
 
-# Owner-only reservation views with secure password entry
 def reservation_list(request):
-    form = PasswordForm()
-    if request.method == 'POST' and form.is_valid():
-        password = form.cleaned_data.get('password')
-        if password == 'boss':
-            reservations = Reservation.objects.all().order_by('-date', '-time')
-            return render(request, 'hello_world/reservation_list.html', {'reservations': reservations})
-        else:
-            return HttpResponse("Unauthorized access.")
+    """
+    Owner-only view for reservation lists accessed via a password form.
+    """
+    form = PasswordForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid() and form.cleaned_data['password'] == 'boss':
+        reservations = Reservation.objects.all().order_by('-date', '-time')
+        return render(request, 'hello_world/reservation_list.html', {'reservations': reservations, 'form': form})
     return render(request, 'hello_world/password_entry.html', {'form': form})
 
 def reservation_detail(request, pk):
-    form = PasswordForm(request.GET)
-    if form.is_valid() and form.cleaned_data.get('password') == 'boss':
+    """
+    Detail view for individual reservations, accessed by the owner with a password.
+    """
+    form = PasswordForm(request.GET or None)
+    if form.is_valid() and form.cleaned_data['password'] == 'boss':
         reservation = get_object_or_404(Reservation, pk=pk)
         return render(request, 'hello_world/reservation_detail.html', {'reservation': reservation})
-    return HttpResponse("Unauthorized access.")
+    return HttpResponse("Unauthorized access. Please enter the correct password.")
 
 def reservation_delete(request, pk):
-    form = PasswordForm(request.GET)
-    if form.is_valid() and form.cleaned_data.get('password') == 'boss':
+    """
+    Allows the owner to delete a reservation, accessed via password.
+    """
+    form = PasswordForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid() and form.cleaned_data['password'] == 'boss':
         reservation = get_object_or_404(Reservation, pk=pk)
         reservation.delete()
         return redirect('reservation_list')
-    return HttpResponse("Unauthorized access.")
+    return render(request, 'hello_world/reservation_delete_confirm.html', {'form': form})
 
 def cancel_reservation(request, token):
+    """
+    Allows customers to cancel their reservations using a unique cancellation token.
+    """
     reservation = get_object_or_404(Reservation, cancel_token=token)
-    reservation.delete()
-    return HttpResponse("Your reservation has been cancelled successfully.")
+    if request.method == 'GET':
+        reservation.delete()
+        return HttpResponse("Your reservation has been cancelled successfully. We hope to see you another time!")
