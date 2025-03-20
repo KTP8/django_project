@@ -1,8 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
-# Create your views here.
-
 
 def index(request):
-    return HttpResponse ("Hello, world!")
+    """
+    Renders the home page (index.html) for the restaurant booking system.
+    """
+    return render(request, 'hello_world/index.html')
+
+def booking(request):
+    """
+    Renders the booking page (booking.html) for the restaurant booking system.
+    """
+    return render(request, 'hello_world/booking.html')
