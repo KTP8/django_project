@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>La Italia | Restaurant Booking</title>
+  <!-- Import a stylish Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Overall page styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9f8f6; /* off-white background */
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+    }
+
+    /* Header / Restaurant name styling */
+    header {
+      background: #f2f2f2;
+      padding: 1em;
+      text-align: center;
+    }
+    .restaurant-name {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    /* Red & Green gradient for "La Italia" text */
+    .restaurant-name span {
+      background: linear-gradient(to right, red, green);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Navbar styling */
+    nav {
+      background: #333;
+      padding: 0.5em;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 1em;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Container for main content */
+    .container {
+      padding: 1.5em;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Footer styling */
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1em;
+      margin-top: 2em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Restaurant Name -->
+  <header>
+    <h1 class="restaurant-name">
+      <span>La Italia</span>
+    </h1>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="/">Home</a>
+    <a href="/booking">Booking</a>
+  </nav>
+
+  <!-- Main Content Area -->
+  <div class="container">
+    {% block content %}
+    {% endblock content %}
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 La Italia. All rights reserved.</p>
+  </footer>
+</body>
+</html>
