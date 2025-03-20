@@ -1,0 +1,26 @@
+{% extends "hello_world/base.html" %}
+
+{% block content %}
+<h2>All Reservations</h2>
+<table border="1" cellspacing="0" cellpadding="8">
+  <tr>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Party Size</th>
+    <th>Actions</th>
+  </tr>
+  {% for res in reservations %}
+  <tr>
+    <td>{{ res.name }}</td>
+    <td>{{ res.date }}</td>
+    <td>{{ res.time }}</td>
+    <td>{{ res.party_size }}</td>
+    <td>
+      <a href="{% url 'reservation_detail' res.pk %}">View</a> |
+      <a href="{% url 'reservation_delete' res.pk %}">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock content %}

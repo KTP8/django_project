@@ -1,0 +1,15 @@
+{% extends "hello_world/base.html" %}
+
+{% block content %}
+<h2>Reservation Details</h2>
+<p><strong>Name:</strong> {{ reservation.name }}</p>
+<p><strong>Email:</strong> {{ reservation.email }}</p>
+<p><strong>Date:</strong> {{ reservation.date }}</p>
+<p><strong>Time:</strong> {{ reservation.time }}</p>
+<p><strong>Party Size:</strong> {{ reservation.party_size }}</p>
+<p><strong>Special Requests:</strong> {{ reservation.special_requests }}</p>
+<p><strong>Created On:</strong> {{ reservation.created_on }}</p>
+<p>
+  <a href="{% url 'reservation_list' %}">Back to Reservations</a>
+</p>
+{% endblock content %}
