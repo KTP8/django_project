@@ -79,5 +79,35 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   {% block extras %}{% endblock extras %}
+
+<!-- jQuery included above -->
+<script>
+    $(document).ready(function(){
+      // Validate required inputs on form submission
+      $("form").on("submit", function(e){
+        let valid = true;
+        $(this).find("input, textarea").each(function(){
+          if ($(this).prop("required") && $(this).val().trim() === ""){
+            valid = false;
+            $(this).css("border", "2px solid red");
+          } else {
+            $(this).css("border", "");
+          }
+        });
+        if (!valid){
+          e.preventDefault();
+          alert("Please fill out all required fields.");
+        }
+      });
+  
+      // Real-time update for date field
+      $("#date").on("change", function(){
+        let chosenDate = $(this).val();
+        $("#displayDate").text("You selected: " + chosenDate);
+      });
+    });
+  </script>
+  
+  
 </body>
 </html>

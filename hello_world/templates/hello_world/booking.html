@@ -2,6 +2,13 @@
 
 {% block content %}
 <h2>Book a Table</h2>
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+{% if confirm_email %}
+  <div class="alert alert-warning">{{ message }}</div>
+  <input type="hidden" name="email_confirmed" value="yes" />
+{% endif %}
 <p style="line-height: 1.6;">
   Please fill out the form below to reserve your table at La Italia.
   We'll confirm your booking as soon as possible!
@@ -9,34 +16,40 @@
 
 <form style="max-width: 500px;" method="POST">
   {% csrf_token %}
+  <!-- Name Field -->
   <div style="margin-bottom: 1em;">
     <label for="name" style="display: block; font-weight: 500;">Name:</label>
-    <input type="text" id="name" name="name" style="width: 100%; padding: 0.5em;" required/>
+    <input type="text" id="name" name="name" style="width: 100%; padding: 0.5em;" required />
   </div>
-
+  <!-- Email Field -->
   <div style="margin-bottom: 1em;">
     <label for="email" style="display: block; font-weight: 500;">Email:</label>
-    <input type="email" id="email" name="email" style="width: 100%; padding: 0.5em;" required/>
+    <input type="email" id="email" name="email" style="width: 100%; padding: 0.5em;" required />
   </div>
-
+  <!-- Date Field -->
   <div style="margin-bottom: 1em;">
     <label for="date" style="display: block; font-weight: 500;">Date:</label>
-    <input type="date" id="date" name="date" style="width: 100%; padding: 0.5em;" required/>
+    <input type="date" id="date" name="date" style="width: 100%; padding: 0.5em;" required />
   </div>
-
+  <!-- Time Field -->
   <div style="margin-bottom: 1em;">
     <label for="time" style="display: block; font-weight: 500;">Time:</label>
-    <input type="time" id="time" name="time" style="width: 100%; padding: 0.5em;" required/>
+    <input type="time" id="time" name="time" style="width: 100%; padding: 0.5em;" required />
   </div>
-
+  <!-- Party Size Field -->
   <div style="margin-bottom: 1em;">
     <label for="party_size" style="display: block; font-weight: 500;">Party Size:</label>
-    <input type="number" id="party_size" name="party_size" style="width: 100%; padding: 0.5em;" required/>
+    <input type="number" id="party_size" name="party_size" style="width: 100%; padding: 0.5em;" required />
   </div>
-  
-  <!-- Real-time date display placeholder -->
+  <!-- Seating Choice -->
+  <div style="margin-bottom:1em;">
+    <label style="display:block; font-weight:500;">Seating Preference:</label>
+    <label><input type="radio" name="seating_choice" value="table" checked> Table Seating</label>
+    <label style="margin-left:1em;"><input type="radio" name="seating_choice" value="counter"> Counter Seating</label>
+  </div>
+  <!-- Real-time Date Display -->
   <p id="displayDate" style="font-style: italic; color: #555;"></p>
-
+  <!-- Submit Button -->
   <button type="submit" style="background: #333; color: #fff; padding: 0.7em 1.2em; border: none; cursor: pointer;">
     Submit
   </button>
