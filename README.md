@@ -2,6 +2,7 @@
 
 A Django-based restaurant booking system that demonstrates a full-stack web application for "la italia", using an MVC framework, role-based access (simplified for demonstration), and comprehensive testing. This README covers the project scope, requirements, user stories, Agile methodology, installation instructions, usability details, testing, and deployment steps.
 
+See Images of the Project: 
 ---
 
 ## Table of Contents
@@ -237,11 +238,13 @@ Additional models can be added if the restaurant expands functionality (e.g., mu
 
 3. **Reservation Management**
 - Restaurant owners can access a password-protected page (/reservations) to view all bookings.
+- IMPORTANT: The password is "boss" (all lowercase).
 - Owners can view, delete, or modify reservations (CRUD functionality).
 
 4. **Email Notifications**
 - When a reservation is created, an email is sent to the diner (if email settings are properly configured).
 - The email includes a uniqye cancellation link to let diners cancel if needed.
+- For now, emails will only print to terminal instead of being sent. 
 
 ## Usability
 
@@ -317,6 +320,9 @@ These tests help confirm the application is user-friendly and responsive to diff
 - **Advanced Analytics**  
   Generate reports on peak booking times, average party size, etc.
 
+- **Email Sending**
+  In future iterations emails sent to user with form that matches website aesthetics containing reservation details.
+
 
 ## Deployment
 
@@ -357,6 +363,6 @@ Verify the booking process, email confirmations, and management pages work corre
 - **Django** (https://www.djangoproject.com/)  
 - **Bootstrap** (https://getbootstrap.com/)  
 - **jQuery** (https://jquery.com/)  
-- Icons or images (if any) are used from free resources or with proper attribution.
+
 
 © 2025 La Italia – Restaurant Booking System
