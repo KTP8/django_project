@@ -83,6 +83,10 @@ def booking(request):
             new_reservation.seating_type = chosen_seating
             new_reservation.save()
 
+            # Mark the booking as CONFIRMED
+            new_reservation.status = 'CONFIRMED'
+            new_reservation.save()
+
             # Email confirmation with details and cancellation link
             send_mail(
                 'Booking Confirmation - La Italia',
@@ -128,10 +132,8 @@ def reservation_detail(request, pk):
     """
     Detail view for individual reservations, accessed by the owner with a password.
     """
-    form = PasswordForm(request.GET or None)
-    if form.is_valid() and form.cleaned_data['password'] == 'boss':
-        reservation = get_object_or_404(Reservation, pk=pk)
-        return render(request, 'hello_world/reservation_detail.html', {'reservation': reservation})
+    reservation = get_object_or_404(Reservation, pk=pk)
+    return render(request, 'hello_world/reservation_detail.html', {'reservation': reservation})
     return HttpResponse("Unauthorized access. Please enter the correct password.")
 
 def reservation_delete(request, pk):
