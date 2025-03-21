@@ -3,6 +3,12 @@
 A Django-based restaurant booking system that demonstrates a full-stack web application for "la italia", using an MVC framework, role-based access (simplified for demonstration), and comprehensive testing. This README covers the project scope, requirements, user stories, Agile methodology, installation instructions, usability details, testing, and deployment steps.
 
 See Images of the Project: 
+![Screenshot 2025-03-21 at 20 50 55](https://github.com/user-attachments/assets/279395eb-e238-449e-ac0a-148a495a86d8)
+![Screenshot 2025-03-21 at 20 51 06](https://github.com/user-attachments/assets/fc5761cb-cbf8-469a-bcfb-4e32c9045a58)
+![Screenshot 2025-03-21 at 20 51 18](https://github.com/user-attachments/assets/276daa95-cffc-4607-9f57-39b9e5e5f901)
+![Screenshot 2025-03-21 at 20 51 38](https://github.com/user-attachments/assets/e9c36055-148d-4513-8f25-9fdec456e27c)
+
+
 ---
 
 ## Table of Contents
