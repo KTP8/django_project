@@ -166,7 +166,7 @@ cd django_project
 2. **Create and Activate a Virtual Environment**
 python -m venv venv
 source venv/bin/activate  # On macOS/Linux
-# or
+### or
 venv\Scripts\activate  # On Windows
 
 3. **Install Dependencies**
@@ -359,5 +359,4 @@ Verify the booking process, email confirmations, and management pages work corre
 - **jQuery** (https://jquery.com/)  
 - Icons or images (if any) are used from free resources or with proper attribution.
 
-Licensed under the [MIT License](https://opensource.org/licenses/MIT).  
 © 2025 La Italia – Restaurant Booking System

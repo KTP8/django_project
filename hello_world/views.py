@@ -73,7 +73,6 @@ def booking(request):
                 })
 
             # Assign seating based on party size
-            # Updated to match the 'TABLE'/'COUNTER' choices in the model
             if party_size >= 7:
                 chosen_seating = "COUNTER"
             else:

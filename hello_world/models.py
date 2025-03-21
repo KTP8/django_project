@@ -20,8 +20,7 @@ class Reservation(models.Model):
     seating_type = models.CharField(
         max_length=10,
         choices=[
-            ('TABLE', 'Table Seating'),
-            ('COUNTER', 'Counter Seating')
+            ('TABLE', 'Table Seating'), ('COUNTER', 'Counter Seating')
         ]
     )
     status = models.CharField(

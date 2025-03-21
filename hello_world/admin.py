@@ -3,5 +3,4 @@ from .models import Reservation
 
 @admin.register(Reservation)
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'date', 'time', 'party_size', 'created_on')
-   
+    list_display = ('name', 'date', 'time', 'party_size')

@@ -13,7 +13,6 @@ class ReservationForm(forms.ModelForm):
         help_text="Enter a number from 1 to 8."
     )
     date = forms.DateField(
-        # Removed `limit_choices_to` because it's not valid for SelectDateWidget
         widget=forms.SelectDateWidget(
             empty_label=("Choose Year", "Choose Month", "Choose Day")
         ),
@@ -30,7 +29,7 @@ class ReservationForm(forms.ModelForm):
 
     class Meta:
         model = Reservation
-        fields = ['name', 'email', 'date', 'time', 'party_size', 'special_requests']
+        fields = ['name', 'email', 'date', 'time', 'party_size']
 
 
 class PasswordForm(forms.Form):
